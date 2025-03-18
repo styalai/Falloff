@@ -1,42 +1,116 @@
-import arcade
-from arcade.gui import UIManager, UIFlatButton
+import pygame
+import sys
 
-window = arcade.Window(1080/2.4, 1920/2.4, "Falloff")
-window.center_window()
+pygame.init()
 
-class GameView(arcade.View):
+# Constantes
+height = pygame.display.Info().current_h - 75
+width = int(height * 9 / 16)
+size_window = (width, height)
+color_window = (56, 182, 255)
+
+# Création de la fenêtre
+window = pygame.display.set_mode(size_window)
+pygame.display.set_caption("Falloff")
+
+### Une classe pour tout les boutton
+class Button(pygame.sprite.Sprite):
+    def __init__(self, img, x=0, y=0, scale=1):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(img)
+        self.image = pygame.transform.scale(self.image, (int(self.image.get_width() * scale), int(self.image.get_height() * scale)))
+
+        self.rect = self.image.get_rect()
+        self.setCords(x, y)
+
+    def setCords(self, x, y):
+        self.rect.center = (x, y)
+
+    def pressed(self, mouse):
+        return self.rect.collidepoint(mouse)  # Utilisation de collidepoint() pour simplifier
+
+
+### classe du jeu course
+class Course:
     def __init__(self):
-        super().__init__()
-        ### Player sprite
-        self.player_s = 0.3
-        self.player_x = self.width//2
-        self.player_y = self.height - 150
-        self.sprites = arcade.SpriteList()
-        self.player = arcade.Sprite("../assets/rectanglerose.webp",
-                                    scale=self.player_s,
-                                    angle=90
-                                    )
-        self.player.position = self.player_x, self.player_y
-        self.sprites.append(self.player)
-        
-        ### Button
-        self.button_h = 70
-        self.button_w = 190
-        self.manager = UIManager()
-        self.humain = UIFlatButton(
-            x=(self.width-self.button_w)//2,
-            y=10,
-            width=self.button_w,
-            height=self.button_h,
-            color=(92, 225, 230),
-        )
-        self.manager.add(self.humain)
+        self.running = True
     
-    def on_draw(self):
-        self.clear((56, 182, 255))
-        self.sprites.draw()
-        self.manager.draw()
+    # coder le jeu
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
 
-game = GameView()
-window.show_view(game)
-arcade.run()
+            pygame.display.flip()
+
+### classe du jeu aventure
+class Aventure:
+    def __init__(self):
+        self.running = True
+    
+    # coder le jeu
+    def run(self):
+        while self.running:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+
+            pygame.display.flip()
+
+
+### Menu pour choisir entre course et aventure
+class MenuHumain:
+    def __init__(self):
+        self.running = True
+        self.course = Button("assets/button_course.png", x=width//2, y=50, scale=0.5)
+        self.aventure = Button("assets/button_aventure.png", x=width//2, y=150, scale=0.5)
+        self.all_sprites = pygame.sprite.Group(self.course, self.aventure)
+
+    def run(self):
+        while self.running:
+            window.fill(color_window) 
+            self.all_sprites.draw(window)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.course.pressed(event.pos):
+                        Course().run() # run course
+                    if self.aventure.pressed(event.pos):
+                        Aventure().run() # run aventure
+
+            pygame.display.flip()
+
+
+### Premier menu
+class Menu:
+    def __init__(self):
+        self.running = True
+        self.button_humain = Button("assets/button_humain.png", x=width//2, y=50, scale=0.5)
+        self.button_ia = Button("assets/button_ia.png", x=width//2, y=150, scale=0.5)
+        self.all_sprites = pygame.sprite.Group(self.button_humain, self.button_ia)
+
+    def run(self):
+        while self.running:
+            window.fill(color_window)  # Remplir l'écran avec une couleur
+            self.all_sprites.draw(window)
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    if self.button_humain.pressed(event.pos):
+                        MenuHumain().run()
+
+            pygame.display.flip()
+
+
+Menu().run()

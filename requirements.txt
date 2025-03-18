@@ -3,3 +3,4 @@ arcade==3.0.2
 # clone arcade
 torch==2.5.0
 #upgrade typing_extensions
+pillow
