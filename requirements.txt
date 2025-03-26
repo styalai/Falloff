@@ -1,6 +1,7 @@
-#Your computer can likely run Arcade if it supports Python 3.9 or higher.
-arcade==3.0.2
-# clone arcade
-torch==2.5.0
-#upgrade typing_extensions
+# python 3.13.0
+pygame==2.6.1
+torch==2.6.0
+h5py==3.13.0
+scikit-image==0.25.2
+# maybe upgrade typing_extensions
 pillow

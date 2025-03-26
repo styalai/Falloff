@@ -1,0 +1,3 @@
+ballon: https://fr.vecteezy.com/png/22069350-colore-fete-ballon-lie-avec-chaine
+cloud: https://fr.vecteezy.com/png/26774603-nuage-png-avec-ai-genere?autodl_token=a70731b08760293b91c0744f61833b154b54c08a7286dc8743882e6c423f6e30015f125d47ca8320fd511ab29d286e9fe85644ebfe98da63bee44fcb0ced6ff3
+etoile: https://fr.vecteezy.com/png/23639239-etoile-illustrations-celibataire-etoile
